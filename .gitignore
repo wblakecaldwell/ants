@@ -1,0 +1,46 @@
+# Ignore build and output directories
+build/
+bin/
+
+# Ignore CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+*.cmake
+
+# Ignore compilation and linking artifacts
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.lib
+*.exe
+*.out
+*.app
+*.dSYM/
+
+# Ignore package files
+*.user
+*.userprefs
+*.mode1v3
+
+# Ignore OS generated files
+.DS_Store
+Desktop.ini
+Thumbs.db
+*.swp
+*.swo
+
+# Ignore Visual Studio Code settings
+.vscode/
+
+# Ignore C++ IDE files
+*.sln
+*.suo
+*.xcodeproj
+*.xcuserstate
+*.xcuserdata
+*.xccheckout
+*.xcworkspace
+.ipch/
