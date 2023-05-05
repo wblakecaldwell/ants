@@ -3,10 +3,13 @@
 
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
+#include <ctime>
 
 #include "absl/strings/str_cat.h"
 #include "absl/synchronization/mutex.h"
 #include "sprite.h"
+#include "ant.h"
 
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
@@ -40,8 +43,14 @@ int main(int argc, char *argv[]) {
   SDL_Event event;
   bool running = true;
 
-  Point topLeft = Point(Uint8(100), Uint8(100));
-  Point bottomRight = Point(Uint8(200), Uint8(400));
+  Point windowTopLeft = Point(0,0);
+  Point windowBottomRight = Point(WINDOW_WIDTH, WINDOW_HEIGHT);
+  std::cout << "Window top left: " << windowTopLeft << ", bottom right: " << windowBottomRight << std::endl;
+
+  int step = 3;
+  Vector vector = Vector(step,step);
+  Point topLeft = Point(3, 50);
+  Point bottomRight = Point(43, 90);
 
   while (running) {
     while (SDL_PollEvent(&event)) {
@@ -54,11 +63,53 @@ int main(int argc, char *argv[]) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    topLeft.set_x(topLeft.x()+1);
-    topLeft.set_y(topLeft.y()+1);
+    Ant ant = Ant("../sprites/red-ant.jpg", 100, 100, renderer);
+    ant.render(renderer);
 
-    bottomRight.set_x(bottomRight.x()+1);
-    bottomRight.set_y(bottomRight.y()+1);
+    while(true) {
+
+      Point newTopLeft = topLeft;
+      Point newBottomRight = bottomRight;
+
+      newTopLeft.Move(vector);
+      newBottomRight.Move(vector);
+
+      if(!newTopLeft.Inside(windowTopLeft, windowBottomRight) || 
+        !newBottomRight.Inside(windowTopLeft, windowBottomRight)) {
+          std::cout << "Out of bounds at topLeft: " << topLeft << ", bottomRight: " << bottomRight 
+            << " on window " << windowTopLeft << ", " << windowBottomRight << std::endl;
+
+          // need to change direction
+          int random_num = (std::rand() % 4) + 1;
+          switch (random_num) {
+              case 1:
+                  vector = Vector(step, -step);
+                  break;
+              case 2:
+                  vector = Vector(-step, -step);
+                  break;
+              case 3:
+                  vector = Vector(step, step);
+                  break;
+              case 4:
+                  vector = Vector(-step, step);
+                  break;
+              default:
+                  std::cout << "Number not in range" << std::endl;
+                  return -1;
+                  break;
+          }
+
+          newTopLeft = topLeft;
+          newBottomRight = bottomRight;
+          newTopLeft.Move(vector);
+          newBottomRight.Move(vector);
+          continue;
+      }
+      topLeft = newTopLeft;
+      bottomRight = newBottomRight;
+      break;
+    };
 
     Sprite s = Sprite();
     s.DrawRect(renderer, topLeft, bottomRight);

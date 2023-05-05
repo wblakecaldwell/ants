@@ -26,13 +26,21 @@ Sprite& Sprite::operator=(const Sprite& other) {
 }
 
 void Sprite::DrawRect(SDL_Renderer* renderer, Point topLeft, Point bottomRight) {
-  for (int x = topLeft.x(); x <= bottomRight.x(); ++x) {
-    for (int y = topLeft.y(); y <= bottomRight.y(); ++y) {
-      Uint8 r = rand() % 256;
-      Uint8 g = rand() % 256;
-      Uint8 b = rand() % 256;
-      SDL_SetRenderDrawColor(renderer, Uint8(255), Uint8(0), Uint8(0), Uint8(255));
-      SDL_RenderDrawPoint(renderer, x, y);
-    }
-  }
+  // for (int x = topLeft.x; x <= bottomRight.x; ++x) {
+  //   for (int y = topLeft.y; y <= bottomRight.y; ++y) {
+  //     Uint8 r = rand() % 256;
+  //     Uint8 g = rand() % 256;
+  //     Uint8 b = rand() % 256;
+  //     SDL_SetRenderDrawColor(renderer, Uint8(255), Uint8(0), Uint8(0), Uint8(255));
+  //     SDL_RenderDrawPoint(renderer, x, y);
+  //   }
+  // }
+  // SDL_SetRenderDrawColor(renderer, Uint8(255), Uint8(0), Uint8(0), Uint8(255));
+  // SDL_Rect rect = { topLeft.x, topLeft.y, bottomRight.x-topLeft.x, bottomRight.y-topLeft.y };
+  // SDL_RenderDrawRect(renderer, &rect);
+
+// Create a rectangle
+SDL_Rect rect = { topLeft.x, topLeft.y, bottomRight.x-topLeft.x, bottomRight.y-topLeft.y };
+SDL_SetRenderDrawColor(renderer, rand() % 256, rand() % 256, rand() % 256, 255);
+SDL_RenderFillRect(renderer, &rect);
 }

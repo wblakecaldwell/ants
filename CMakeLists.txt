@@ -9,16 +9,18 @@ include(CTest)
 enable_testing()
 
 file(GLOB SOURCES "*.cc")
-add_executable(ants main.cc ${SOURCES})
+add_executable(ants ${SOURCES})
 
-# Find the SDL2 package
+# SDL2 package
 find_package(SDL2 REQUIRED)
-
-# Include the SDL2 header files
 include_directories(${SDL2_INCLUDE_DIRS})
-
-# Link the SDL2 library to the ants target
 target_link_libraries(ants ${SDL2_LIBRARIES})
+
+# SDL_image packages
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+find_package(SDL2_image REQUIRED)
+include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
+target_link_libraries(ants ${SDL2_IMAGE_LIBRARIES})
 
 # Package configuration
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
